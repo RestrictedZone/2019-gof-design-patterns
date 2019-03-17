@@ -1,9 +1,12 @@
 package abstract_factory_pattern.game_maker
 
 import abstract_factory_pattern.base.MazeFactory
-import abstract_factory_pattern.component.*
+import abstract_factory_pattern.component.Door
+import abstract_factory_pattern.component.Maze
+import abstract_factory_pattern.component.Room
+import abstract_factory_pattern.component.Wall
 
-class EnchantedMazeFactory : MazeFactory {
+class BombedMazeFactory : MazeFactory {
 
     override fun makeMaze(): Maze {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -18,10 +21,6 @@ class EnchantedMazeFactory : MazeFactory {
     }
 
     override fun makeDoor(room_01: Room, room_02: Room): Door {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    fun castSpell(): Spell {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
