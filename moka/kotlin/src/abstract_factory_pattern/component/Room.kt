@@ -15,7 +15,8 @@ class Room(var roomNumber: Int) : MapSite {
         mapSites.put(direction, mapSite)
     }
 
-    fun getSize() {
+    fun getSize(direction: Direction) {
+        mapSites[direction]
     }
 
 }
