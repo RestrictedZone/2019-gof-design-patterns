@@ -26,6 +26,7 @@ interface Door extends MapSite {
 }
 
 interface Maze {
+  rooms: Room[]
   addRoom(room: Room): void
   roomNo(no: number): Room
 }
@@ -75,11 +76,11 @@ class DefaultMaze implements Maze {
   constructor(public rooms: Room[] = []) {
   }
 
-  addRoom(room: Room) {
+  public addRoom(room: Room) {
     this.rooms.push(room)
   }
 
-  roomNo(no: number): Room {
+  public roomNo(no: number): Room {
     const room = this.rooms.find(({roomNumber}) => roomNumber === no)
     if (!room) {
       throw new Error("룸이 없어!!")
@@ -87,6 +88,7 @@ class DefaultMaze implements Maze {
     return room
   }
 }
+
 
 class DefaultWall implements Wall {
   enter() {
@@ -101,15 +103,15 @@ class DefaultRoom implements Room {
   ) {
   }
 
-  enter() {
+  public enter() {
     console.log(`enter the ${this.roomNumber} room`)
   }
 
-  getSide(direction: Direction) {
+  public getSide(direction: Direction) {
     return this.sides[direction]
   }
 
-  setSide(direction: Direction, site: MapSite) {
+  public setSide(direction: Direction, site: MapSite) {
     this.sides[direction] = site
   }
 }
@@ -117,11 +119,11 @@ class DefaultRoom implements Room {
 class DefaultDoor implements Door {
   constructor(public room0: Room, public room1: Room) {}
 
-  enter() {
+  public enter() {
     console.log(`enter the ${this.room0.roomNumber}-${this.room1.roomNumber} door`)
   }
 
-  otherSideFrom(room: Room): Room {
+  public otherSideFrom(room: Room): Room {
     return room === this.room0 ? this.room1 : this.room0
   }
 }
@@ -150,19 +152,18 @@ class DefaultMazeFactory implements MazeFactory {
 class EnchantedRoom extends DefaultRoom {
   constructor(
     public roomNumber: number,
-    public spell: string,
+    public spell: string, // 책에는 Spell 타입이 있지만 귀찮아서 string으로 대체합니다.
     public sides: MapSite[] = []
   ) {
     super(roomNumber, sides)
   }
 }
 
-class DoorNeedingSpell extends DefaultDoor {
-  //
-}
+class DoorNeedingSpell extends DefaultDoor {}
+
 class EnchantedMazeFactory extends DefaultMazeFactory {
   
-  makeRoom(no: number) {
+  public makeRoom(no: number) {
     return new EnchantedRoom(no, "CastSpell()")
   }
 
@@ -171,6 +172,68 @@ class EnchantedMazeFactory extends DefaultMazeFactory {
   }
 }
 
+class BombedWall extends DefaultWall {}
+
+class RoomWithABomb extends DefaultRoom {}
+
+class BombedMazeFactory extends DefaultMazeFactory {
+  
+  public makeWall() {
+    return new BombedWall()
+  }
+
+  public makeRoom(no: number) {
+    return new RoomWithABomb(no)
+  }
+}
+
+
 console.log(createMaze(new DefaultMazeFactory()))
 console.log(createMaze(new EnchantedMazeFactory()))
+console.log(createMaze(new BombedMazeFactory()))
 
+
+// function printMaze(maze: Maze) {
+//   const points = new Map<Room, [number, number]>()
+//   let pointXMin = 0
+//   let pointYMin = 0
+
+//   function calculateRoom(room: Room) {
+//     if (points.get(room)) {
+//       return
+//     }
+//     for (const direction of [Direction.East, Direction.West, Direction.North, Direction.South]) {
+//       const mapsite = room.getSide(direction)
+//       if ((mapsite as Door).otherSideFrom) {
+//         const door = mapsite as Door
+//         const otherRoom = door.otherSideFrom(room)
+//         if (direction === Direction.East && otherRoom.getSide(Direction.West) !== door) {
+//           throw new Error("문이 이상하게 붙어있셔!! 111")
+//         }
+//         if (direction === Direction.West && otherRoom.getSide(Direction.East) !== door) {
+//           throw new Error("문이 이상하게 붙어있셔!! 222")
+//         }
+//         if (direction === Direction.North && otherRoom.getSide(Direction.South) !== door) {
+//           throw new Error("문이 이상하게 붙어있셔!! 333")
+//         }
+//         if (direction === Direction.South && otherRoom.getSide(Direction.North) !== door) {
+//           throw new Error("문이 이상하게 붙어있셔!! 444")
+//         }
+//       }
+//     }
+//   }
+
+//   for (const room of maze.rooms) {
+//     if (points.size === 0) {
+//       pointXMin = 0
+//       pointYMin = 0
+//       points.set(room, [0, 0])
+//       continue
+//     }
+//     calculateRoom(room)
+//   }
+
+//   console.log(points, pointXMin, pointYMin)
+// }
+
+// printMaze(createMaze(new DefaultMazeFactory()))
