@@ -1,3 +1,6 @@
+import abstract_factory_pattern.MazeGame
+import abstract_factory_pattern.game_maker.EnchantedMazeFactory
+
 fun main(args: Array<String>) {
-    print("Hello world")
+    MazeGame.createMaze(EnchantedMazeFactory())
 }
