@@ -1,12 +1,13 @@
 import abc
-from enum import Enum
+
+from enum import IntEnum
 
 
-class Direction(Enum):
-    North = 1
-    South = 2
-    East = 3
-    West = 4
+class Direction(IntEnum):
+    North = 0
+    South = 1
+    East = 2
+    West = 3
 
 
 class MapSite(metaclass=abc.ABCMeta):
@@ -16,18 +17,22 @@ class MapSite(metaclass=abc.ABCMeta):
 
 
 class Room(MapSite):
-    def get_side(self, direction) -> MapSite:
-        pass
+    def __init__(self, room_no):
+        self._sides = [None] * 4
+        self._room_number = room_no
 
-    def set_side(self, direction, mapsite):
-        pass
+    @property
+    def room_number(self):
+        return self._room_number
+
+    def get_side(self, direction):
+        return self._sides[direction]
+
+    def set_side(self, direction, map_site):
+        self._sides[direction] = map_site
 
     def enter(self):
         print('room enter')
-
-    def __init__(self, room_no):
-        self._sides = []
-        self._room_number = room_no
 
 
 class Wall(MapSite):
@@ -44,16 +49,19 @@ class Door(MapSite):
     def enter(self):
         print('door enter')
 
-    def other_side_from(room: Room) -> Room:
+    def other_side_from(self, room: Room) -> Room:
         pass
 
 
 class Maze:
+    def __init__(self):
+        self.rooms = []
+
     def add_room(self, room):
-        pass
+        self.rooms.append(room)
 
     def room_no(self, no: int):
-        pass
+        return [r for r in self.rooms if r.room_number == no].pop()
 
 
 class CreateMaze:
@@ -79,4 +87,11 @@ class CreateMaze:
 
         return a_maze
 
+
+if __name__ == '__main__':
+    game = CreateMaze.maze_game()
+    room = game.room_no(2)
+    room.enter()
+    room.get_side(Direction.East).enter()
+    room.get_side(Direction.West).enter()
 
