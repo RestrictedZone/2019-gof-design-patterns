@@ -3,7 +3,7 @@ package abstract_factory_pattern.component
 import abstract_factory_pattern.base.Direction
 import abstract_factory_pattern.base.MapSite
 
-class Room(var roomNumber: Int) : MapSite() {
+class Room(var roomNumber: Int) : MapSite {
 
     var mapSites: HashMap<Direction, MapSite> = hashMapOf()
 

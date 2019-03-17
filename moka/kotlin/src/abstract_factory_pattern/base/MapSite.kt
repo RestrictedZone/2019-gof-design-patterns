@@ -1,7 +1,7 @@
 package abstract_factory_pattern.base
 
-abstract class MapSite {
+interface MapSite {
 
-    abstract fun enter()
+    fun enter()
 
 }
