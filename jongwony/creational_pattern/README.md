@@ -45,6 +45,10 @@ look and feel 표준에 상관없이 프로그램이 이식성을 가지려면, 
 
 > DB2API 객체를 예로들 수 있음 - python 의 경우 https://www.python.org/dev/peps/pep-0249/
 
+### Structures
+
+![abstract factory pattern](../graphviz/af.gv.png)
+
 ### Participants
 
 - AbstractFactory (WidgetFactory)
