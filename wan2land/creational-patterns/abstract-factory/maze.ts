@@ -1,31 +1,31 @@
 // Creational Patterns 에서 공동으로 다루는 부분
 
-enum Direction {
+export enum Direction {
   North = 0,
   South,
   East,
   West,
 }
 
-interface MapSite {
+export interface MapSite {
   enter(): void
 }
 
-interface Room extends MapSite {
+export interface Room extends MapSite {
   sides: MapSite[]
   roomNumber: number
   getSide(direction: Direction): MapSite
   setSide(direction: Direction, site: MapSite): void
 }
 
-interface Wall extends MapSite {
+export interface Wall extends MapSite {
 }
 
-interface Door extends MapSite {
+export interface Door extends MapSite {
   otherSideFrom(room: Room): Room
 }
 
-interface Maze {
+export interface Maze {
   rooms: Room[]
   addRoom(room: Room): void
   roomNo(no: number): Room
