@@ -1,60 +1,59 @@
 import graphviz as gv
 
-af = gv.Digraph('AF', filename='af.gv', format='png')
+af = gv.Digraph(
+    'AF',
+    filename='af.gv',
+    format='png',
+    graph_attr={'rankdir': 'BT', 'style': 'invis'},
+    node_attr={'shape': 'record'},
+    edge_attr={'arrowhead': 'empty'},
+)
 
-af.graph_attr.update(rankdir='BT')
-
-with af.subgraph(
-        name='cluster_0',
-        graph_attr={'style': 'invis'},
-        node_attr={'shape': 'record'},
-        edge_attr={'arrowhead': 'empty'}
-) as factory:
-    factory.node('AbstractFactory',
-                 label='{AbstractFactory | CreateProductA() \l CreateProductB() \l}')
-    factory.node('ConcreteFactory2',
-                 label='{ConcreteFactory2 | CreateProductA() \l CreateProductB() \l}')
-    factory.node('ConcreteFactory1',
-                 label='{ConcreteFactory1 | CreateProductA() \l CreateProductB() \l}')
+with af.subgraph(name='cluster_0') as factory:
+    factory.node(
+        'AbstractFactory',
+        label=r'{AbstractFactory|CreateProductA()\lCreateProductB()\l}'
+    )
+    factory.node(
+        'ConcreteFactory2',
+        label=r'{ConcreteFactory2|CreateProductA()\lCreateProductB()\l}'
+    )
+    factory.node(
+        'ConcreteFactory1',
+        label=r'{ConcreteFactory1|CreateProductA()\lCreateProductB()\l}'
+    )
     factory.edges([
         ('ConcreteFactory1', 'AbstractFactory'),
         ('ConcreteFactory2', 'AbstractFactory'),
     ])
 
+with af.subgraph(name='cluster_1') as product:
+    with product.subgraph(name='cluster_A') as cluster:
+        cluster.node('AbstractProductA')
+        cluster.node('ProductA2')
+        cluster.node('ProductA1')
+        cluster.edges([
+            ('ProductA2', 'AbstractProductA'),
+            ('ProductA1', 'AbstractProductA'),
+        ])
+
+    with product.subgraph(name='cluster_B') as cluster:
+        cluster.node('AbstractProductB')
+        cluster.node('ProductB2')
+        cluster.node('ProductB1')
+        cluster.edges([
+            ('ProductB2', 'AbstractProductB'),
+            ('ProductB1', 'AbstractProductB'),
+        ])
+    product.edge('AbstractProductB', 'ProductA1', style='invis')
+    product.edge('AbstractProductB', 'ProductA2', style='invis')
+
 af.node('Client')
-
-with af.subgraph(
-        name='cluster_1',
-        graph_attr={'style': 'invis'},
-        node_attr={'shape': 'record'},
-        edge_attr={'arrowhead': 'empty'}
-) as product:
-    product.node('AbstractProductA')
-    product.node('ProductA2')
-    product.node('ProductA1')
-    product.edges([
-        ('ProductA2', 'AbstractProductA'),
-        ('ProductA1', 'AbstractProductA'),
-    ])
-
-with af.subgraph(
-        name='cluster_2',
-        graph_attr={'style': 'invis'},
-        node_attr={'shape': 'record'},
-        edge_attr={'arrowhead': 'empty'}
-) as product:
-    product.node('AbstractProductB')
-    product.node('ProductB2')
-    product.node('ProductB1')
-    product.edges([
-        ('ProductB2', 'AbstractProductB'),
-        ('ProductB1', 'AbstractProductB'),
-    ])
-
 
 af.attr(
     'edge',
     style='dashed',
+    arrowhead='normal',
     constraint='false',
 )
 

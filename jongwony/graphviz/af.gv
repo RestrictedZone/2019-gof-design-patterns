@@ -1,0 +1,40 @@
+digraph AF {
+	graph [rankdir=BT style=invis]
+	node [shape=record]
+	edge [arrowhead=empty]
+	subgraph cluster_0 {
+		AbstractFactory [label="{AbstractFactory|CreateProductA()\lCreateProductB()\l}"]
+		ConcreteFactory2 [label="{ConcreteFactory2|CreateProductA()\lCreateProductB()\l}"]
+		ConcreteFactory1 [label="{ConcreteFactory1|CreateProductA()\lCreateProductB()\l}"]
+		ConcreteFactory1 -> AbstractFactory
+		ConcreteFactory2 -> AbstractFactory
+	}
+	subgraph cluster_1 {
+		subgraph cluster_A {
+			AbstractProductA
+			ProductA2
+			ProductA1
+			ProductA2 -> AbstractProductA
+			ProductA1 -> AbstractProductA
+		}
+		subgraph cluster_B {
+			AbstractProductB
+			ProductB2
+			ProductB1
+			ProductB2 -> AbstractProductB
+			ProductB1 -> AbstractProductB
+		}
+		AbstractProductB -> ProductA1 [style=invis]
+		AbstractProductB -> ProductA2 [style=invis]
+	}
+	Client
+	edge [arrowhead=normal constraint=false style=dashed]
+	ConcreteFactory1 -> ProductA1
+	ConcreteFactory2 -> ProductA2
+	ConcreteFactory1 -> ProductB1
+	ConcreteFactory2 -> ProductB2
+	edge [style=solid]
+	Client -> AbstractFactory
+	Client -> AbstractProductA
+	Client -> AbstractProductB
+}
