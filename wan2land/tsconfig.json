@@ -15,6 +15,6 @@
     "noImplicitReturns": true
   },
   "include": [
-    "src/**/*"
+    "creational-patterns/**/*.ts"
   ]
 }
