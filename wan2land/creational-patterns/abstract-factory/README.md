@@ -27,10 +27,12 @@ Benzz 자동차 공장과 Teslaa 자동차 공장(자동차 이름을 어디서 
 BenzzFactory는 BenzzWheel, BenzzWindow를 생산합니다. 그리고 TeslaaFactory는 TeslaaWheel, TeslaaWindow를 생산합니다. 그리고 이 공장을 사용하는 객체는 추상화된 CarFactory만을 바라보고 있으면 됩니다. 구조는 다음과 같습니다.
 
 ```text
-       ┌─────────────────┐                                                          
-       │     Client      │                                                          
-       └─────────────────┘                                                          
-                │                                                                   
+       ┌──────────────────┐       ┌──────────────────┐                              
+       │      Client      │       │       Car        │                              
+       ├──────────────────┤       ├──────────────────┤                              
+       │+ createCar(): Car│──────▶│+ wheels: Wheel[] │                              
+       └────────┬─────────┘       │+ window: Window  │                              
+                │                 └──────────────────┘                              
                 ▼                                                                   
        ┌─────────────────┐                                                          
        │  <<interface>>  │                                                          
@@ -69,3 +71,6 @@ BenzzFactory는 BenzzWheel, BenzzWindow를 생산합니다. 그리고 TeslaaFact
 
 [소스보기(Typescript)](./maze.ts)
 
+## 실생활의 사용 예시
+
+- Connector와 Connection (Connector가 Factory, Connection이 생성된 결과)
