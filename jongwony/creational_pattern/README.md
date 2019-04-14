@@ -75,3 +75,72 @@ AbstractFactory 와 AbstractProduct 클래스로부터 정의된 인터페이스
 단사여야 한다(서로다른 제품 객체는 서로다른 concrete factory 를 사용).
 
 - AbstractFactory 는 필요한 제품 객체를 생성하는 책임을 ConcreteFactory 로 위임(defers).
+
+### Consequences
+
+1. It isolates concrete classes.
+제품 클래스 이름이 구체 팩토리 구현에서 분리되므로 사용자 코드에는 나타나지 않도록 과정과 책임을 캡슐화
+
+
+1. It makes exchaging product families easy.
+concrete factory 만 변경하여 서로 다른 제품군을 사용할 수 있도록 교체가능
+
+1. It promotes consistency among products.
+한번에 한 그룹에서 만든 객체를 사용하도록 함으로써 일관성을 갖도록 보장
+
+1. Supporting new kinds of products is difficult.
+추상 팩토리는 제품 집합에만 고정되어 있기 때문에
+새로운 종류의 제품이 등장하면 팩토리 구현 및 모든 서브클래스 변경을 해야합니다.
+
+### Implementation
+
+1. Factories as singletons
+
+애플리케이션은 하나의 제품군에 대해 하나의 ConcreteFactory 인스턴스만 있으면 됩니다.
+주목할 점은 ConcreteFactory 인스턴스가 Singleton이라는 점
+제품군에 대해서 하나면 된다.
+
+1. Creating the products.
+
+AbstractFactory 는 단지 제품을 생성하기 위한 인터페이스를 선언하는 것이고,
+그것을 생성하는 책임은 Product의 서브클래스인 ConcreteProduct에 있다.
+
+example: smalltalk
+
+```smalltalk
+make: partName
+    ^ (partCatalog at: partName) copy
+```
+
+```python
+def make(part_name):
+    # part_catalog: global dictionary[factory]
+    return part_catalog[part_name].copy()
+```
+
+```smalltalk
+addPart: partTemplate named: partName
+    partCatalog at: partName put: partTemplate
+```
+
+```python
+def add_part(part_name, part_template)
+    part_catalog[part_name] = part_template
+```
+
+
+```smalltalk
+aFactory addPart: aPrototype named: #ACMEWidget
+```
+
+```python
+class ACMEWidget(Factory):
+    def add_part():
+        pass
+```
+
+1. Defining extensible factories.
+
+Example: Maze
+
+commit:
