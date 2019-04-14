@@ -1,69 +1,81 @@
-
 // 추상화 객체들입니다.
-
 interface CarFactory {
-  createWheel(): WheelInterface
-  createWindow(): WindowInterface
+  createWheels(): Wheel[]
+  createEngine(): Engine
 }
 
-interface WheelInterface {}
-interface WindowInterface {}
+interface Wheel {}
+interface Engine {}
+
+
 
 // 실제 구현체
-class BenzzFactory implements CarFactory{
-  public createWheel() {
-    return new BenzzWheel()
+class TruckFactory implements CarFactory{
+  public createWheels() {
+    // 바퀴가 6개!!
+    return [
+      new TruckWheel(),
+      new TruckWheel(),
+      new TruckWheel(),
+      new TruckWheel(),
+      new TruckWheel(),
+    ]
   }
-  public createWindow() {
-    return new BenzzWindow()
-  }
-}
 
-class BenzzWheel implements WheelInterface {}
-class BenzzWindow implements WindowInterface {}
-
-
-class TeslaaFactory implements CarFactory{
-  public createWheel() {
-    return new TeslaaWheel()
-  }
-  public createWindow() {
-    return new TeslaaWindow()
+  public createEngine() {
+    return new TruckEngine()
   }
 }
 
-class TeslaaWheel implements WheelInterface {}
-class TeslaaWindow implements WindowInterface {}
+class TruckWheel implements Wheel {}
+class TruckEngine implements Engine {}
 
 
+class BusFactory implements CarFactory{
+  public createWheels() {
+    return [
+      new BusWheel(),
+      new BusWheel(),
+      new BusWheel(),
+      new BusWheel(),
+    ]
+  }
+
+  public createEngine() {
+    return new BusEngine()
+  }
+}
+
+class BusWheel implements Wheel {}
+class BusEngine implements Engine {}
+
+
+// 자동차를 만드는 Client
 class Client {
   constructor(public factory: CarFactory) {
   }
 
   createCar() {
-    const wheel1 = this.factory.createWheel()
-    const wheel2 = this.factory.createWheel()
-    const wheel3 = this.factory.createWheel()
-    const wheel4 = this.factory.createWheel()
-    const window = this.factory.createWindow()
+    const wheels = this.factory.createWheels()
+    const engine = this.factory.createEngine()
 
     // 자동차 생산완료!
     return {
-      window: window,
-      wheels: [wheel1, wheel2, wheel3, wheel4],
+      engine,
+      wheels,
     }
   }
 }
 
 
-// 만약에 Teslaa 자동차를 만들어야 한다면..
+// 만약에 버스를 만들어야 한다면..
 {
-  const client = new Client(new TeslaaFactory())
+  const client = new Client(new BusFactory())
   console.log(client.createCar()) // 자동차 생산완료  
 }
 
-// 만약에 Benzz 자동차를 만들어야 한다면..
+// 만약에 트럭을 만들어야 한다면..
 {
-  const client = new Client(new BenzzFactory())
+  const client = new Client(new TruckFactory())
   console.log(client.createCar()) // 자동차 생산완료  
 }
