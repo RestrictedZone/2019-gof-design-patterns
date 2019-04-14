@@ -13,3 +13,4 @@
 
 - [1.1. 팩토리 (Factory)](./factory/README.md) : GoF에서 다루지는 않지만 Factory 자체를 알아야 이 다음 내용이 연결됩니다.
 - [1.2. 추상팩토리 (Abstract Factory)](./abstract-factory/README.md)
+- [1.3. 빌더 (Builder)](./builder/README.md)
